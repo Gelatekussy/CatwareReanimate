@@ -37,6 +37,9 @@ This Reanimation Has:
     - Comet
     - And many more!
     
+   # What are the hats for Bullet?
+    - R15: https://www.roblox.com/catalog/5973840187/Left-Sniper-Shoulder (50 Robux)
+    - R6: https://www.roblox.com/catalog/63690008/Pal-Hair (Free)
    # Credits:
     - Gelatek: Almost Everything
     - ProductionTakeOne: Optimizations/Special Properties
