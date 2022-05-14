@@ -6,3 +6,6 @@
 - More Exploit Combability (Should even work on JJSploit now.)
 - Bullet Now HighLights.
 - Bugfix with R15 Bullet hat being affected on R6.
+
+# 1.1.1
+- Spawn(function()'d the Animate code
