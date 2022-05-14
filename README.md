@@ -7,7 +7,7 @@ This Reanimation Has:
 - Align Reanimation
 - R15/R6 Support
 - R15 To R6
-- Simple, Fling and Bullet Options
+- Simple, Fling Bullet, Godmode Options
 - Stable
 - Doesn't use a lot of ram
 - Optimized
