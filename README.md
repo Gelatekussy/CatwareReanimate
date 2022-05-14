@@ -25,7 +25,6 @@ This Reanimation Has:
     }
     loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Source.lua"))()
 
-# FAQ: 
   # Can I use it in my hub/scripts?
     - Of course! That's what is the reanimation for!, No need to credit since the main script automatically prints credits.
   # What exploits are supported?
@@ -37,6 +36,6 @@ This Reanimation Has:
     - Comet
     - And many more!
     
-# Credits:
-- Gelatek: Almost Everything
-- ProductionTakeOne: Optimizations/Special Properties
+   # Credits:
+    - Gelatek: Almost Everything
+    - ProductionTakeOne: Optimizations/Special Properties
