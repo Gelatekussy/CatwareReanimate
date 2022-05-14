@@ -535,5 +535,5 @@ ConsoleLog("Everything Loaded!")
 
 
 Notification(true,"Catware Reanimate", "Loaded! Credits: Gelatek,ProductionTakeOne")
-warn("Made By: Gelatek,ProductionTakeOne, Version 1.1.0")
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))()
+warn("Made By: Gelatek,ProductionTakeOne, Version 1.1.1")
+spawn(function() loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))() end)
