@@ -2,7 +2,10 @@ if workspace:FindFirstChild("CatwareReanim") then
 	Notification(false,"Catware Reanimate", "Already Reanimated. Reset to Unreanimate.")
 	return
 end
-
+--[[
+	When Forking/Modifying the reanimate please credit the me!
+	We would appreciate it since this reanimate took me 8 hours to code!
+]]
 local function Align(Part0,Part1,Position,Orientation)
     local AlignPosition = Instance.new("AlignPosition")
     AlignPosition.Parent = Part0
