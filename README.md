@@ -18,9 +18,9 @@ This Reanimation Has:
 Check: https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/Main.lua
 
 # FAQ: 
-  1. Can I use it in my hub/scripts?
+  # Can I use it in my hub/scripts?
     - Of course! That's what is the reanimation for!, No need to credit since the main script automatically prints credits.
-  2. What exploits are supported?
+  # What exploits are supported?
     - Scriptware (100%)
     - Synapse
     - Krnl
