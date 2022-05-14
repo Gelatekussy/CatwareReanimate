@@ -528,12 +528,7 @@ game:GetService("Players").LocalPlayer.Chatted:connect(function(msg)
 end)
 local ee = {}
 local deaddd = false
-table.insert(ee,game:GetService("Players").LocalPlayer.Character.Humanoid.Died:Connect(function()
-		deaddd = true
-		for i,v in pairs(ee) do
-			v:Disconnect()
-		end
-end))
+
 table.insert(ee,game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
 		deaddd = true
 		for i,v in pairs(ee) do
@@ -544,11 +539,11 @@ end))
 playAnimation("idle", 0.1, Humanoid)
 pose = "Standing"
 
-while Figure.Parent ~= nil do
+table.insert(ee,game:GetService("RunService").Stepped:Connect(function()
 	if deaddd == true then
-		break
+		return
 	end
 	
 	local _, time = wait(0.1)
 	move(time)
-end
+end))
