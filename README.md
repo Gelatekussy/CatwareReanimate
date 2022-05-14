@@ -44,4 +44,4 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareR
     - R6: https://www.roblox.com/catalog/63690008/Pal-Hair (Free)
    # Credits:
     - Gelatek: Almost Everything
-    - ProductionTakeOne: Optimizations/Special Properties
+    - ProductionTakeOne: Optimizations/Special Properties/Help with Godmode
