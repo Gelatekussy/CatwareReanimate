@@ -10,7 +10,7 @@ This Reanimation Has:
 - Simple, Fling and Bullet Options
 - Stable
 - Doesn't use a lot of ram
-- Optimizated
+- Optimized
 - Preloads Assets so no more getobjects lagspikes!
 - Automatically gets your Clone on scripts! (no need to change character variable!)
 - Bulit-In Bullet Setting
