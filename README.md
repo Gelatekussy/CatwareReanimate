@@ -19,7 +19,7 @@ This Reanimation Has:
 ```lua
 Options = {
 	["Jitteryness"] = Vector3.new(30.5,0,0), -- Velocity
-	["Type"] = "Raw", -- Raw (Simple), Fling, Bullet
+	["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
 	["InstantBullet"] = {
 		["Bool"] = true, -- Enables it
 		["SmartLock"] = true -- Locks Bullet On Head On Hold; Disables "Bullet Follow Pointer" Thingy on hold.
