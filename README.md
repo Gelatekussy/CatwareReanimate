@@ -18,12 +18,17 @@ This Reanimation Has:
 # Code
 ```lua
 Options = {
-        ["Jitteryness"] = Vector3.new(29,0,0), -- Velocity
-        ["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
-        ["InstantBullet"] = true, -- Type has to be Bullet or Godmode
-        ["R15Method"] = "Align", -- Align,AlignMax Or CFrame
-        ["R6Method"] = "Align", -- Align,AlignMax Or CFrame
-        ["BonusProperties"] = true -- Net, and other stuff.
+	["Jitteryness"] = Vector3.new(30.5,0,0), -- Velocity
+	["Type"] = "Raw", -- Raw (Simple), Fling, Bullet
+	["InstantBullet"] = {
+		["Bool"] = true, -- Enables it
+		["SmartLock"] = true -- Locks Bullet On Head On Hold; Disables "Bullet Follow Pointer" Thingy on hold.
+	}, -- Type has to be Bullet/Godmode
+	["R15Method"] = "Align", -- Align,AlignMax Or CFrame
+	["R6Method"] = "Align", -- Align,AlignMax Or CFrame
+	["BonusProperties"] = true, -- Net, and other stuff.
+	["RigAnimations"] = true, -- Enables Default Animate
+	["LoadLibrary"] = false -- Loads LoadLibrary for scripts that still use it.
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Source.lua"))()
 ```
