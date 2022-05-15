@@ -12,3 +12,16 @@
 
 # 1.1.2 (BUGFIX)
 - Changed Names for Align Instances
+
+# 1.2.0 
+- Added New Bullet Options
+  - `SmartLock = Boolean` Enabling It will allow you to lock your bullet Into target while holding.
+- InstantBullet Is now first table inside a table!
+- Complety Fixed R15/R6 Bullet Hats
+- Shorter Bullet Loadtime (by a 0.5 seconds lol)
+- Code Formatted For Developers.
+- + 150 Lines
+- 2 New Options! 
+  - `RigAnimations = Boolean` Lets you select if you wanna enable animations for your character or keep it static
+  - `LoadLibrary = Boolean` Loads Loadlibrary for scripts that uses it.
+- Errors in the properties calls are now ignored.
