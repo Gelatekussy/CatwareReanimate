@@ -7,5 +7,8 @@
 - Bullet Now HighLights.
 - Bugfix with R15 Bullet hat being affected on R6.
 
-# 1.1.1
-- Spawn(function()'d the Animate code
+# 1.1.1 (BUGFIX)
+- Changed Animate Code A little so no more while true do
+
+# 1.1.2 (BUGFIX)
+- Changed Names for Align Instances
