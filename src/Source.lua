@@ -1,4 +1,3 @@
-
 local Global = (getgenv and getgenv()) or _G
 
 --[[
@@ -26,7 +25,7 @@ local function Align(Part0,Part1,Position,Orientation)
 	local Attachment2 = Instance.new("Attachment")
 	Attachment2.Parent = Part1
 	Attachment2.Name = "CatwareAtt2"
-	
+
 	AlignPosition.Attachment0 = Attachment1
 	AlignPosition.Attachment1 = Attachment2
 
@@ -99,16 +98,18 @@ local SimRadius = setsimulationradius or set_simulation_radius or HiddenProps() 
 local Loops = {}
 
 if Options.BonusProperties == true then
-	settings().Physics.AllowSleep = false
-	settings().Physics.ForceCSGv2 = false
-	settings().Physics.DisableCSGv2 = true
-	settings().Physics.UseCSGv2 = false
-	settings().Rendering.EagerBulkExecution = true
-	settings().Physics.ThrottleAdjustTime = math.huge
-	settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
-	HiddenProps(workspace,"HumanoidOnlySetCollisionsOnStateChange", Enum.HumanoidOnlySetCollisionsOnStateChange.Disabled)
-	HiddenProps(workspace, 'InterpolationThrottling', Enum.InterpolationThrottlingMode.Disabled)
-	Players.LocalPlayer.ReplicationFocus = workspace
+	pcall(function()
+		settings().Physics.AllowSleep = false
+		settings().Physics.ForceCSGv2 = false
+		settings().Physics.DisableCSGv2 = true
+		settings().Physics.UseCSGv2 = false
+		settings().Rendering.EagerBulkExecution = true
+		settings().Physics.ThrottleAdjustTime = math.huge
+		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
+		HiddenProps(workspace,"HumanoidOnlySetCollisionsOnStateChange", Enum.HumanoidOnlySetCollisionsOnStateChange.Disabled)
+		HiddenProps(workspace, 'InterpolationThrottling', Enum.InterpolationThrottlingMode.Disabled)
+		Players.LocalPlayer.ReplicationFocus = workspace
+	end)
 end
 
 local Character = workspace[Player.Name]
@@ -187,11 +188,11 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 	Global.Disconnect = false
 	spawn(function() 
 		if Options.Type == "Bullet" then 
-			wait(1.5)
+			wait(1)
 		elseif Options.Type == "Godmode" then
-			wait(6.5)
+			wait(6)
 		end
-		if Options.InstantBullet == true then
+		if Options.InstantBullet.Bool == true then
 			Global.Disconnect = true
 			Humanoid:ChangeState(16)
 			FlingPart.Transparency = 1
@@ -220,38 +221,72 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 				OnHold = false
 			end))
 			table.insert(Loops,RunService.Heartbeat:Connect(function()
-				if OnHold then
-					if Mouse.Target ~= nil then
-						BP.Position = Mouse.Hit.p
-						Thrust.Location = Mouse.Hit.p
+				if Options.InstantBullet.SmarkLock == false then
+					if OnHold then
+						if Mouse.Target ~= nil then
+							BP.Position = Mouse.Hit.p
+							Thrust.Location = Mouse.Hit.p
+						end
+					else
+						BP.Position = Character.Head.Position + Vector3.new(0,-10,0)
+						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
 					end
-				else
-					BP.Position = Character.Head.Position + Vector3.new(0,-10,0)
-					Thrust.Location = Mouse.Hit.p + Character.Head.Position + Vector3.new(0,-10,0)
-				end
-			end))
-		end	
+				else -- HEREEE
+					if OnHold then
+						if game.Players:GetPlayerFromCharacter(Mouse.Target.Parent) then
+							if Mouse.Target.Parent.Name ~= Players.LocalPlayer.Name then
+								if Mouse.Target ~= nil then
+									Thrust.Location = Mouse.Target.Parent:FindFirstChild("Head").CFrame.p + Vector3.new(0,-2,0)
+									BP.Position = Mouse.Target.Parent:FindFirstChild("Head").CFrame.p + Vector3.new(0,-2,0)
+								end
+							end
+						elseif game.Players:GetPlayerFromCharacter(Mouse.Target.Parent.Parent) then
+							if Mouse.Target.Parent.Parent.Name ~= Players.LocalPlayer.Name then
+								if Mouse.Target ~= nil then
+									Thrust.Location = Mouse.Target.Parent.Parent:FindFirstChild("Head").CFrame.p + Vector3.new(0,-2,0)
+									BP.Position = Mouse.Target.Parent.Parent:FindFirstChild("Head").CFrame.p + Vector3.new(0,-2,0)
+								end
+							end
+						end
+					else
+						BP.Position = Character.Head.Position + Vector3.new(0,-10,0)
+						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
+					end -- end the smart flign thing
+				end -- end of the onhold statement
+
+			end)) -- end of the loop
+
+		end	-- end of the instantbullet stastment
 		if Humanoid.RigType == Enum.HumanoidRigType.R6 then
 			pcall(function() Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren() end)
 		else
 			pcall(function() Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren() end)
 		end
-		if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.R6Method ~= "CFrame" and Options.Type == "Bullet" then
-			if Character:FindFirstChild("Pal Hair") then
-				Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren()
-				Align(Character:FindFirstChild("Pal Hair").Handle,Clone:FindFirstChild("Left Leg"),Vector3.new(0,0,0),Vector3.new(90,0,0))
-			else
-				ConsoleLog("Pal Hair Not Found! (Bullet)")
-			end
-		elseif Humanoid.RigType == Enum.HumanoidRigType.R15 and Options.R15Method ~= "CFrame" then
-			if Character:FindFirstChild("SniperShoulderL") then
+	end)
+	if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.R6Method ~= "CFrame" and Options.Type == "Bullet" then
+		if Character:FindFirstChild("Pal Hair") then
+			Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren()
+			Align(Character:FindFirstChild("Pal Hair").Handle,Clone:FindFirstChild("Left Leg"),Vector3.new(0,0,0),Vector3.new(90,0,0))
+		else
+			ConsoleLog("Pal Hair Not Found! (Bullet)")
+		end
+		spawn(function() task.wait(1.75)
+			Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren()
+			Align(Character:FindFirstChild("Pal Hair").Handle,Clone:FindFirstChild("Left Leg"),Vector3.new(0,0,0),Vector3.new(90,0,0))
+		end)	
+	elseif Humanoid.RigType == Enum.HumanoidRigType.R15 and Options.R15Method ~= "CFrame" and Options.Type == "Bullet" or Options.Type == "Godmode" then
+		if Character:FindFirstChild("SniperShoulderL") then
+			Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren()
+			Align(Character:FindFirstChild("SniperShoulderL").Handle,Clone:FindFirstChild("Left Arm"),Vector3.new(0,-0.5,0),Vector3.new(0,0,0))
+
+			spawn(function() task.wait(1.75)
 				Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren()
 				Align(Character:FindFirstChild("SniperShoulderL").Handle,Clone:FindFirstChild("Left Arm"),Vector3.new(0,-0.5,0),Vector3.new(0,0,0))
-			else
-				ConsoleLog("Left Sniper Shoulder Not Found! (Bullet)")
-			end
+			end)	
+		else
+			ConsoleLog("Left Sniper Shoulder Not Found! (Bullet)")
 		end
-	end)
+	end
 end
 
 table.insert(Loops,UserInput.JumpRequest:Connect(function()
@@ -345,7 +380,9 @@ table.insert(Loops,RunService.Heartbeat:Connect(function()
 				if Options.R6Method == "CFrame" or Options.R15Method == "CFrame" then
 					local Handle = Part:FindFirstChild("Handle")
 					if Handle then
-						if Options.Type == "Bullet" and Part.Name ~= "Pal Hair" and Part.Name ~= "SniperShoulderL" then
+						if Options.Type == "Bullet" and Part.Name ~= "Pal Hair" and Humanoid.RigType == Enum.HumanoidRigType.R6  then
+							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+						elseif Options.Type == "Bullet" and Part.Name ~= "SniperShoulderL" and Humanoid.RigType == Enum.HumanoidRigType.R15 then
 							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
 						elseif Options.Type ~= "Bullet" then
 							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
@@ -378,31 +415,27 @@ table.insert(Loops,RunService.Heartbeat:Connect(function()
 				end
 				Character:FindFirstChild("Head").CFrame = Clone:FindFirstChild("Head").CFrame
 			end
-			if Options.Type == "Bullet" then
-				if Character:FindFirstChild("Pal Hair") then
+			if Options.Type == "Bullet" then -- bullet check
+				if Character:FindFirstChild("Pal Hair") then -- hat detect
 					Character:FindFirstChild("Pal Hair").Handle.CFrame = Clone:FindFirstChild("Left Leg").CFrame * CFrame.Angles(math.rad(90),0,0)
-				else
-
 				end
-				if Global.Disconnect == false then
-					Character:FindFirstChild("Left Arm").CFrame = Clone:FindFirstChild("Left Arm").CFrame
+				if Global.Disconnect == false then -- disconnectio
+					Character:FindFirstChild("Left Leg").CFrame = Clone:FindFirstChild("Left Leg").CFrame
 				end
-			else 
-				Character:FindFirstChild("Left Arm").CFrame = Clone:FindFirstChild("Left Arm").CFrame
+			else -- if no bullet then 
+				Character:FindFirstChild("Left Leg").CFrame = Clone:FindFirstChild("Left Leg").CFrame
 			end
+			Character:FindFirstChild("Left Arm").CFrame = Clone:FindFirstChild("Left Arm").CFrame
 			Character:FindFirstChild("Right Arm").CFrame = Clone:FindFirstChild("Right Arm").CFrame
-			Character:FindFirstChild("Left Leg").CFrame = Clone:FindFirstChild("Left Leg").CFrame
 			Character:FindFirstChild("Right Leg").CFrame = Clone:FindFirstChild("Right Leg").CFrame
 		elseif Humanoid.RigType == Enum.HumanoidRigType.R15 and Options.R15Method == "CFrame" then
 			Character:FindFirstChild("LowerTorso").CFrame = Clone:FindFirstChild("Torso").CFrame * CFrame.new(0,-0.8,0)
 			if Options.Type == "Godmode" then
 				Character:FindFirstChild("Head").CFrame = Clone:FindFirstChild("Head").CFrame
 			end
-			if Options.Type == "Bullet" then
+			if Options.Type == "Bullet" or Options.Type == "Godmode" then
 				if Character:FindFirstChild("SniperShoulderL") then
 					Character:FindFirstChild("SniperShoulderL").Handle.CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.5,0)
-				else
-
 				end
 				if Global.Disconnect == false then
 					Character:FindFirstChild("LeftUpperArm").CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.4,0)
@@ -501,25 +534,25 @@ else
 		end
 		game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
 
-	local Bind = Instance.new("BindableEvent")
-	Bind.Parent = Character
-	wait(0.15)
-	Bind.Event:Connect(function()
-		Character.Parent = workspace
-		for Index,Loop in pairs(Loops) do
-			Loop:Disconnect()
-		end
-		Global.OriginalCharacter = nil
-		Global.ReanimationClone = nil
-		Global.Disconnect = nil
-		Clone:Destroy()
-		Players.LocalPlayer.Character = workspace[Players.LocalPlayer.Name]
-		if workspace:FindFirstChildOfClass("Camera") then
-			workspace:FindFirstChildOfClass("Camera").CameraSubject = Humanoid
-		end
-		game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
-	end)
-	game:GetService("StarterGui"):SetCore("ResetButtonCallback", Bind)
+		local Bind = Instance.new("BindableEvent")
+		Bind.Parent = Character
+		wait(0.15)
+		Bind.Event:Connect(function()
+			Character.Parent = workspace
+			for Index,Loop in pairs(Loops) do
+				Loop:Disconnect()
+			end
+			Global.OriginalCharacter = nil
+			Global.ReanimationClone = nil
+			Global.Disconnect = nil
+			Clone:Destroy()
+			Players.LocalPlayer.Character = workspace[Players.LocalPlayer.Name]
+			if workspace:FindFirstChildOfClass("Camera") then
+				workspace:FindFirstChildOfClass("Camera").CameraSubject = Humanoid
+			end
+			game:GetService("StarterGui"):SetCore("ResetButtonCallback", true)
+		end)
+		game:GetService("StarterGui"):SetCore("ResetButtonCallback", Bind)
 	end)
 end
 table.insert(Loops,Players.LocalPlayer.CharacterAdded:Connect(function()
@@ -531,11 +564,17 @@ table.insert(Loops,Players.LocalPlayer.CharacterAdded:Connect(function()
 	Global.Disconnect = nil
 	Clone:Destroy()
 end))
-	
+
 ConsoleLog("Everything Loaded!")
 
 
 
 Notification(true,"Catware Reanimate", "Loaded! Credits: Gelatek,ProductionTakeOne")
-warn("Made By: Gelatek,ProductionTakeOne, Version 1.1.2")
-loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))()
+warn("Made By: Gelatek,ProductionTakeOne, Version 1.2.0")
+
+if Options.LoadLibrary == true then
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
+end
+if Options.RigAnimations ~= false then
+	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))()
+end
