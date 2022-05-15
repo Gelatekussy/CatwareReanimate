@@ -12,25 +12,27 @@ local function Align(Part0,Part1,Position,Orientation)
 	AlignPosition.Parent = Part0
 	AlignPosition.MaxForce = 13e5
 	AlignPosition.Responsiveness = 200
-
+	AlignPosition.Name = "CatwareAP1"
 	local AlignOrientation = Instance.new("AlignOrientation")
 	AlignOrientation.Parent = Part0
 	AlignOrientation.MaxTorque = 9e9
 	AlignOrientation.Responsiveness = 200
-
+	AlignOrientation.Name = "CatwareAO"
 	local Attachment1 = Instance.new("Attachment")
 	Attachment1.Parent = Part0
 	Attachment1.Position = Position or Vector3.new(0,0,0)
 	Attachment1.Orientation = Orientation or Vector3.new(0,0,0)
-
+	Attachment1.Name = "CatwareAtt1"
 	local Attachment2 = Instance.new("Attachment")
 	Attachment2.Parent = Part1
-
+	Attachment2.Name = "CatwareAtt2"
+	
 	AlignPosition.Attachment0 = Attachment1
 	AlignPosition.Attachment1 = Attachment2
 
 	local AlignPosition2 = Instance.new("AlignPosition")
 	AlignPosition2.Parent = Part0
+	AlignPosition2.Name = "CatwareAP2"
 	if Options.R6Method == "AlignMax" or Options.R15Method == "AlignMax" then
 		AlignPosition2.RigidityEnabled = true
 	else
@@ -535,5 +537,5 @@ ConsoleLog("Everything Loaded!")
 
 
 Notification(true,"Catware Reanimate", "Loaded! Credits: Gelatek,ProductionTakeOne")
-warn("Made By: Gelatek,ProductionTakeOne, Version 1.1.1")
+warn("Made By: Gelatek,ProductionTakeOne, Version 1.1.2")
 loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))()
