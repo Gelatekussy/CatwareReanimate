@@ -37,3 +37,4 @@
   - Made the netless not jitter a lot.
   - Errors In Smartlock are now pcalled (those were fake errors)
   - Fixed Smartlock
+  - Made it so script will run even without option table (will create default table)
