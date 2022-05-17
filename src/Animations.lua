@@ -266,40 +266,37 @@ function toolKeyFrameReachedFunc(frameName)
 	end
 end
 
-
 function playToolAnimation(animName, transitionTime, humanoid, priority)	 
-		
-		local roll = math.random(1, animTable[animName].totalWeight) 
-		local origRoll = roll
-		local idx = 1
-		while (roll > animTable[animName][idx].weight) do
-			roll = roll - animTable[animName][idx].weight
-			idx = idx + 1
-		end
---		print(animName .. " * " .. idx .. " [" .. origRoll .. "]")
-		local anim = animTable[animName][idx].anim
+	local roll = math.random(1, animTable[animName].totalWeight)
+	local origRoll = roll
+	local idx = 1
+	while (roll > animTable[animName][idx].weight) do
+		roll = roll - animTable[animName][idx].weight
+		idx = idx + 1
+	end
+	--	print(animName .. " * " .. idx .. " [" .. origRoll .. "]")
+	local anim = animTable[animName][idx].anim
 
-		if (toolAnimInstance ~= anim) then
-			
-			if (toolAnimTrack ~= nil) then
-				toolAnimTrack:Stop()
-				toolAnimTrack:Destroy()
-				transitionTime = 0
-			end
-					
-			-- load it to the humanoid; get AnimationTrack
-			toolAnimTrack = humanoid:LoadAnimation(anim)
-			if priority then
-				toolAnimTrack.Priority = priority
-			end
-			 
-			-- play the animation
-			toolAnimTrack:Play(transitionTime)
-			toolAnimName = animName
-			toolAnimInstance = anim
-
-			currentToolAnimKeyframeHandler = toolAnimTrack.KeyframeReached:connect(toolKeyFrameReachedFunc)
+	if (toolAnimInstance ~= anim) then
+		if (toolAnimTrack ~= nil) then
+			toolAnimTrack:Stop()
+			toolAnimTrack:Destroy()
+			transitionTime = 0
 		end
+
+		-- load it to the humanoid; get AnimationTrack
+		toolAnimTrack = humanoid:LoadAnimation(anim)
+		if priority then
+			toolAnimTrack.Priority = priority
+		end
+
+		-- play the animation
+		toolAnimTrack:Play(transitionTime)
+		toolAnimName = animName
+		toolAnimInstance = anim
+
+		currentToolAnimKeyframeHandler = toolAnimTrack.KeyframeReached:connect(toolKeyFrameReachedFunc)
+	end
 end
 
 function stopToolAnimations()
@@ -311,12 +308,12 @@ function stopToolAnimations()
 
 	toolAnimName = ""
 	toolAnimInstance = nil
+
 	if (toolAnimTrack ~= nil) then
 		toolAnimTrack:Stop()
 		toolAnimTrack:Destroy()
 		toolAnimTrack = nil
 	end
-
 
 	return oldAnim
 end
@@ -327,18 +324,20 @@ end
 
 function onRunning(speed)
 	pcall(function()
-	if speed > 0.01 then
-		playAnimation("walk", 0.1, Humanoid)
-		if currentAnimInstance and currentAnimInstance.AnimationId == "http://www.roblox.com/asset/?id=180426354" then
-			setAnimationSpeed(speed / 14.5)
+		if speed > 0.01 then
+			playAnimation("walk", 0.1, Humanoid)
+
+			if currentAnimInstance and currentAnimInstance.AnimationId == "http://www.roblox.com/asset/?id=180426354" then
+				setAnimationSpeed(speed / 14.5)
+			end
+
+			pose = "Running"
+		else
+			if emoteNames[currentAnim] == nil then
+				playAnimation("idle", 0.1, Humanoid)
+				pose = "Standing"
+			end
 		end
-		pose = "Running"
-	else
-		if emoteNames[currentAnim] == nil then
-			playAnimation("idle", 0.1, Humanoid)
-			pose = "Standing"
-		end
-	end
 	end)
 end
 
@@ -393,6 +392,7 @@ function getTool()
 	for _, kid in ipairs(Figure:GetChildren()) do
 		if kid.className == "Tool" then return kid end
 	end
+
 	return nil
 end
 
@@ -405,8 +405,7 @@ function getToolAnim(tool)
 	return nil
 end
 
-function animateTool()
-	
+function animateTool()	
 	if (toolAnim == "None") then
 		playToolAnimation("toolnone", toolTransitionTime, Humanoid, Enum.AnimationPriority.Idle)
 		return
@@ -474,7 +473,6 @@ function move(time)
 	-- Tool Animation handling
 	local tool = getTool()
 	if tool and tool:FindFirstChild("Handle") then
-	
 		local animStringValueObject = getToolAnim(tool)
 
 		if animStringValueObject then
@@ -513,6 +511,7 @@ Humanoid.Swimming:connect(onSwimming)
 -- setup emote chat hook
 game:GetService("Players").LocalPlayer.Chatted:connect(function(msg)
 	local emote = ""
+
 	if msg == "/e dance" then
 		emote = dances[math.random(1, #dances)]
 	elseif (string.sub(msg, 1, 3) == "/e ") then
@@ -524,26 +523,27 @@ game:GetService("Players").LocalPlayer.Chatted:connect(function(msg)
 	if (pose == "Standing" and emoteNames[emote] ~= nil) then
 		playAnimation(emote, 0.1, Humanoid)
 	end
-
 end)
-local ee = {}
-local deaddd = false
 
-table.insert(ee,game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
-		deaddd = true
-		for i,v in pairs(ee) do
-			v:Disconnect()
-		end
-		
+local events = {}
+local dead = false
+
+table.insert(events, game:GetService("Players").LocalPlayer.CharacterAdded:Connect(function()
+	dead = true
+
+	for i,v in pairs(events) do
+		v:Disconnect()
+	end
 end))
+
 playAnimation("idle", 0.1, Humanoid)
 pose = "Standing"
 
-table.insert(ee,game:GetService("RunService").Stepped:Connect(function()
-	if deaddd == true then
+table.insert(events, game:GetService("RunService").Stepped:Connect(function()
+	if dead == true then
 		return
 	end
-	
+
 	local _, time = wait(0.1)
 	move(time)
 end))

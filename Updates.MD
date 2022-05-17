@@ -25,3 +25,8 @@
   - `RigAnimations = Boolean` Lets you select if you wanna enable animations for your character or keep it static
   - `LoadLibrary = Boolean` Loads Loadlibrary for scripts that uses it.
 - Errors in the properties calls are now ignored.
+
+# 1.2.1
+- Better code
+- Deprecated functions such as `wait` and `spawn` were replaced with `task.wait` and `task.spawn`
+- New option: `Logging = Boolean` Enables logging (prints debug information in console)

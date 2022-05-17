@@ -1,5 +1,5 @@
 Options = {
-	["Jitteryness"] = Vector3.new(30.5,0,0), -- Velocity
+	["Jitteryness"] = Vector3.new(30.5, 0, 0), -- Velocity
 	["Type"] = "Godmode", -- Raw (Simple), Fling, Bullet, Godmode
 	["InstantBullet"] = {
 		["Bool"] = true, -- Enables it
@@ -9,7 +9,8 @@ Options = {
 	["R6Method"] = "Align", -- Align,AlignMax Or CFrame
 	["BonusProperties"] = true, -- Net, and other stuff.
 	["RigAnimations"] = true, -- Enables Default Animate
-	["LoadLibrary"] = false -- Loads LoadLibrary for scripts that still use it.
+	["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
+	["Logging"] = false -- Enables logging (prints debug information in console)
 }
 
 loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Source.lua"))()
