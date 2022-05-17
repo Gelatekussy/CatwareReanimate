@@ -28,12 +28,12 @@
 
 # 1.2.1
 
-- Danix's Part:
-- 
-- Better code
-- Deprecated functions such as `wait` and `spawn` were replaced with `task.wait` and `task.spawn`
-- New option: `Logging = Boolean` Enables logging (prints debug information in console)
+  # Danix's Part:
+  - Better code
+  - Deprecated functions such as `wait` and `spawn` were replaced with `task.wait` and `task.spawn`
+  - New option: `Logging = Boolean` Enables logging (prints debug information in console)
 
-- Gelatek's Part:
-- Made the netless not jitter a lot.
--  yeah
+  # Gelatek's Part:
+  - Made the netless not jitter a lot.
+  - Errors In Smartlock are now pcalled (those were fake errors)
+  - Fixed Smartlock
