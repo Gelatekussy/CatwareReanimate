@@ -9,11 +9,11 @@ This Reanimation Has:
 - R15 To R6
 - Simple, Fling Bullet, Godmode Options
 - Stable
-- Doesn't use a lot of ram
+- Doesn't use a lot of RAM
 - Optimized
 - Preloads Assets so no more getobjects lagspikes!
 - Automatically gets your Clone on scripts! (no need to change character variable!)
-- Bulit-In Bullet Setting
+- Built-In Bullet Setting
 
 # Code
 ```lua
@@ -28,13 +28,14 @@ Options = {
 	["R6Method"] = "Align", -- Align,AlignMax Or CFrame
 	["BonusProperties"] = true, -- Net, and other stuff.
 	["RigAnimations"] = true, -- Enables Default Animate
-	["LoadLibrary"] = false -- Loads LoadLibrary for scripts that still use it.
+	["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
+	["Logging"] = false -- Enables logging (prints debug information in console)
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Source.lua"))()
 ```
 
   # Can I use it in my hub/scripts?
-    - Of course! That's what is the reanimation for!, No need to credit since the main script automatically prints credits.
+    - Of course! That's what is the reanimation for! No need to credit since the main script automatically prints credits.
   # What exploits are supported?
     - Scriptware (100%)
     - Synapse
