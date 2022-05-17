@@ -29,7 +29,7 @@ Options = {
 	["BonusProperties"] = true, -- Net, and other stuff.
 	["RigAnimations"] = true, -- Enables Default Animate
 	["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
-  ["Logging"] = false -- Enables logging (prints debug information in console)
+	["Logging"] = false -- Enables logging (prints debug information in console)
 }
 loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Source.lua"))()
 ```
