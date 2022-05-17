@@ -13,7 +13,7 @@ This Reanimation Has:
 - Optimized
 - Preloads Assets so no more getobjects lagspikes!
 - Automatically gets your Clone on scripts! (no need to change character variable!)
-- Bult-In Bullet Setting
+- Built-In Bullet Setting
 
 # Code
 ```lua
