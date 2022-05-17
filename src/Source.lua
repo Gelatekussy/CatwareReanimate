@@ -3,6 +3,22 @@
 	We would appreciate it since this reanimate took me 8 hours to code!
 ]]
 
+if not Options then
+	Options = {
+		["Jitteryness"] = Vector3.new(30.5, 0, 0), -- Velocity
+		["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
+		["InstantBullet"] = {
+			["Bool"] = true, -- Enables it
+			["SmartLock"] = false, -- Locks Fling on Head; Disables Bullet Dragging.
+		},
+		["R6Method"] = "Align", -- Align,AlignMax Or CFrame
+		["R15Method"] = "CFrame", -- Align,AlignMax Or CFrame
+		["BonusProperties"] = true, -- Net, and other stuff.
+		["RigAnimations"] = true, -- Enables Default Animate
+		["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
+		["Logging"] = true -- Enables logging (prints debug information in console)
+	}
+end
 local Global = (getgenv and getgenv()) or _G
 
 local function Align(Part0, Part1, Position, Orientation)
@@ -152,7 +168,7 @@ elseif Options.Type == "Bullet" then
 elseif Options.Type == "Godmode" then
 	if Humanoid.RigType == Enum.HumanoidRigType.R6 then
 		FlingPart = Character:FindFirstChild("HumanoidRootPart")
-	else
+	elseif Humanoid.RigType == Enum.HumanoidRigType.R15 then
 		FlingPart = Character:FindFirstChild("LeftUpperArm") 
 	end
 end
@@ -162,7 +178,6 @@ pcall(function()
 	Character:FindFirstChild("State Handler"):Destroy()
 	Character:FindFirstChild("Controls"):Destroy()
 	Character:FindFirstChild("FirstPerson"):Destroy()
-	Character:FindFirstChild("Sound"):Destroy()
 	Character:FindFirstChild("FakeAdmin"):Destroy()
 
 	for Index, RagdollStuff in pairs(CharacterD) do
@@ -210,7 +225,7 @@ local BP = nil
 
 if Options.Type == "Bullet" or Options.Type == "Godmode" then
 	Global.Disconnect = false
-
+	
 	task.spawn(function() 
 		if Options.Type == "Bullet" then 
 			task.wait(1)
@@ -236,7 +251,7 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 			BP.D = 125
 			BP.Position = FlingPart.Position
 			BP.Parent = FlingPart
-			Thrust.Force = Vector3.new(125,125,125)
+			Thrust.Force = Vector3.new(130,130,130)
 
 			if Options.Type == "Godmode" then
 				Thrust.Force = Vector3.new(150,150,150)
@@ -254,7 +269,8 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 			end))
 
 			table.insert(Loops, RunService.Heartbeat:Connect(function()
-				if Options.InstantBullet.SmarkLock == false then
+				pcall(function()
+				if Options.InstantBullet.SmartLock == false then
 					if OnHold then
 						if Mouse.Target ~= nil then
 							BP.Position = Mouse.Hit.p
@@ -265,6 +281,7 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
 					end
 				else -- HEREEE
+
 					if OnHold then
 						if game.Players:GetPlayerFromCharacter(Mouse.Target.Parent) then
 							if Mouse.Target.Parent.Name ~= Players.LocalPlayer.Name then
@@ -286,16 +303,11 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
 					end -- end the smart flign thing
 				end -- end of the onhold statement
-
+			end)
+			
 			end)) -- end of the loop
 
 		end	-- end of the instantbullet stastment
-
-		if Humanoid.RigType == Enum.HumanoidRigType.R6 then
-			pcall(function() Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren() end)
-		else
-			pcall(function() Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren() end)
-		end
 	end)
 
 	if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.R6Method ~= "CFrame" and Options.Type == "Bullet" then
@@ -305,22 +317,11 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 		else
 			ConsoleLog("Pal Hair Not Found! (Bullet)")
 		end
-
-		task.spawn(function()
-			task.wait(1.75)
-			Character:FindFirstChild("Pal Hair").Handle:ClearAllChildren()
-			Align(Character:FindFirstChild("Pal Hair").Handle, Clone:FindFirstChild("Left Leg"), Vector3.new(0,0,0), Vector3.new(90,0,0))
-		end)	
-	elseif Humanoid.RigType == Enum.HumanoidRigType.R15 and Options.R15Method ~= "CFrame" and Options.Type == "Bullet" or Options.Type == "Godmode" then
+	end
+	if Humanoid.RigType == Enum.HumanoidRigType.R15 and Options.R15Method ~= "CFrame" then
 		if Character:FindFirstChild("SniperShoulderL") then
 			Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren()
 			Align(Character:FindFirstChild("SniperShoulderL").Handle, Clone:FindFirstChild("Left Arm"), Vector3.new(0,-0.5,0), Vector3.new(0,0,0))
-
-			task.spawn(function()
-				task.wait(1.75)
-				Character:FindFirstChild("SniperShoulderL").Handle:ClearAllChildren()
-				Align(Character:FindFirstChild("SniperShoulderL").Handle, Clone:FindFirstChild("Left Arm"), Vector3.new(0,-0.5,0), Vector3.new(0,0,0))
-			end)	
 		else
 			ConsoleLog("Left Sniper Shoulder Not Found! (Bullet)")
 		end
@@ -415,9 +416,9 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 			if Part and Part.Parent then
 				if Options.BonusProperties == true then
 					if Options.Type == "Fling" and FlingPart and Part.Name ~= FlingPart.Name then
-						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0)
+						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
 					elseif Options.Type ~= "Fling" then
-						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0)
+						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
 					end
 
 					HiddenProps(Part, "NetworkIsSleeping", false)
@@ -454,8 +455,7 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 		end
 	elseif Humanoid.RigType == Enum.HumanoidRigType.R15 then
 		Character:FindFirstChild("UpperTorso").CFrame = Clone:FindFirstChild("Torso").CFrame * CFrame.new(0,0.19,0)
-		Character:FindFirstChild("HumanoidRootPart").CFrame = Character:FindFirstChild("UpperTorso").CFrame * CFrame.new(0,-0.05,0)
-
+		Character:FindFirstChild("HumanoidRootPart").CFrame = Character:FindFirstChild("UpperTorso").CFrame * CFrame.new(0,-0.02,0)		
 		if FlingPart then
 			FlingPart.Velocity = Vector3.new(500,500,500)
 		end
@@ -466,9 +466,9 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 			Character:FindFirstChild("Torso").CFrame = Clone:FindFirstChild("Torso").CFrame
 
 			if Options.Type == "Godmode" then
-				if Global.Disconnect == false then
-					Character:FindFirstChild("HumanoidRootPart").CFrame = Clone:FindFirstChild("HumanoidRootPart").CFrame
-				end
+					if Global.Disconnect == false then
+						Character:FindFirstChild("HumanoidRootPart").CFrame = Clone:FindFirstChild("HumanoidRootPart").CFrame
+					end
 				Character:FindFirstChild("Head").CFrame = Clone:FindFirstChild("Head").CFrame
 			end
 
@@ -495,13 +495,13 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 			end
 
 			if Options.Type == "Bullet" or Options.Type == "Godmode" then
-				if Character:FindFirstChild("SniperShoulderL") then
-					Character:FindFirstChild("SniperShoulderL").Handle.CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.5,0)
-				end
+					if Character:FindFirstChild("SniperShoulderL") then
+						Character:FindFirstChild("SniperShoulderL").Handle.CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.5,0)
+					end
 
-				if Global.Disconnect == false then
-					Character:FindFirstChild("LeftUpperArm").CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.4,0)
-				end
+					if Global.Disconnect == false then
+						Character:FindFirstChild("LeftUpperArm").CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.4,0)
+					end
 			else
 				Character:FindFirstChild("LeftUpperArm").CFrame = Clone:FindFirstChild("Left Arm").CFrame * CFrame.new(0,0.4,0)
 			end
@@ -654,12 +654,11 @@ end))
 ConsoleLog("Everything is loaded!")
 
 Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne")
-warn("Made By: Gelatek, ProductionTakeOne [Version 1.2.1]")
+warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.3.0]")
 
 if Options.LoadLibrary == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
 end
-
-if Options.RigAnimations ~= false then
+if Options.RigAnimations == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/Animations.lua"))()
 end
