@@ -55,3 +55,4 @@
   
 # 1.3.1
   - The setting table is now counted as a Global (Getgenv)
+  - Added Bullet to getgenv list (getgenv().FlingBullet)
