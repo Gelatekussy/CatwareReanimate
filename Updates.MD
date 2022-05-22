@@ -38,3 +38,8 @@
   - Errors In Smartlock are now pcalled (those were fake errors)
   - Fixed Smartlock
   - Made it so script will run even without option table (will create default table)
+# 1.2.2 (BUGFIX)
+  - Bug Fixed stuff.
+
+# 1.2.3 (BUGFIX)
+  - Fixed Velocity Not applying after setting the BonusProperties to `false` 
