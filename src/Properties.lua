@@ -3,8 +3,8 @@ local HiddenProps = sethiddenproperty or set_hidden_property or sethiddenprop or
 local SimRadius = setsimulationradius or set_simulation_radius or HiddenProps() and function(val) HiddenProps(Player,"SimulationRadius",val) end or function() end
 local RunService = game:GetService("RunService")
 local API = {}
-
-local CharacterDescendants = workspace[game.Players.LocalPlayer.Name]:GetDescendants()
+local Players = game.Players
+local CharacterDescendants = workspace[Players.LocalPlayer.Name]:GetDescendants()
 function API.Properties()
     settings().Physics.AllowSleep = false
     settings().Physics.ForceCSGv2 = false
