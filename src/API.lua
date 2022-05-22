@@ -3,7 +3,7 @@ local SimRadius = setsimulationradius or set_simulation_radius or HiddenProps() 
 local RunService = game:GetService("RunService")
 local API = {}
 local Players = game.Players
-local CharacterDescendants = workspace[Players.LocalPlayer.Name]:GetDescendants()
+local CharacterDescendants = game.Players.LocalPlayer.Character:GetDescendants()
 function API.Properties()
     settings().Physics.AllowSleep = false
     settings().Physics.ForceCSGv2 = false
@@ -18,16 +18,16 @@ function API.Properties()
 end
 
 function API.Net()
-    RunService.RenderStepped:Connect(function()
-        HiddenProps(Players.LocalPlayer, "MaximumSimulationRadius", 1000)
-        HiddenProps(Players.LocalPlayer, "SimulationRadius", 1000)
-        SimRadius(1000)
-        for Index,Part in pairs(CharacterDescendants) do
-            HiddenProps(Part, "NetworkIsSleeping", false)
-            Part.CustomPhysicalProperties = PhysicalProperties.new(0,0,0,0,0)
-            HiddenProps(Part, "NetworkOwnershipRule", Enum.NetworkOwnership.Manual)
-        end
-    end)
+	HiddenProps(Players.LocalPlayer, "MaximumSimulationRadius", 1000)
+	HiddenProps(Players.LocalPlayer, "SimulationRadius", 1000)
+	SimRadius(1000)
+	for Index,Part in pairs(CharacterDescendants) do
+			if Part:IsA("BasePart") then
+			HiddenProps(Part, "NetworkIsSleeping", false)
+			Part.CustomPhysicalProperties = PhysicalProperties.new(0,0,0,0,0)
+			HiddenProps(Part, "NetworkOwnershipRule", Enum.NetworkOwnership.Manual)
+		end
+	end
 end
 
 return API
