@@ -17,7 +17,7 @@ This Reanimation Has:
 
 # Code
 ```lua
-Options = {
+getgenv().Options = {
 	["Jitteryness"] = Vector3.new(30.5,0,0), -- Velocity
 	["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
 	["InstantBullet"] = {
