@@ -52,4 +52,6 @@
   - R15 Network Fix On Fling.
   - R15 Uses new torso fling method!
     - Basically when your walking you might be kinda jittering to left and right sometimes, but it's stable and better than previous one.
-    - 
+  
+# 1.3.1
+  - The setting table is now counted as a Global (Getgenv)
