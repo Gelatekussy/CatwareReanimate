@@ -166,7 +166,7 @@ elseif Options.Type == "Godmode" then
 		FlingPart = Character:FindFirstChild("LeftUpperArm") 
 	end
 end
-
+Global.FlingBullet = FlingPart
 pcall(function()
 	Character:FindFirstChild("Local Ragdoll"):Destroy()
 	Character:FindFirstChild("State Handler"):Destroy()
@@ -226,7 +226,7 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 		elseif Options.Type == "Godmode" then
 			task.wait(6)
 		end
-
+		
 		if Options.InstantBullet.Bool == true then
 			Global.Disconnect = true
 			Humanoid:ChangeState(16)
@@ -612,6 +612,7 @@ else
 			Global.OriginalCharacter = nil
 			Global.ReanimationClone = nil
 			Global.Disconnect = nil
+			Global.FlingBullet = nil
 			Clone:Destroy()
 			Players.LocalPlayer.Character = workspace[Players.LocalPlayer.Name]
 
@@ -634,7 +635,7 @@ table.insert(Loops, Players.LocalPlayer.CharacterAdded:Connect(function()
 	Global.OriginalCharacter = nil
 	Global.ReanimationClone = nil
 	Global.Disconnect = nil
-
+	Global.FlingBullet = nil
 	Clone:Destroy()
 end))
 
