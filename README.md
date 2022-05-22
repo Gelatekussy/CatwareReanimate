@@ -6,6 +6,7 @@ This Reanimation Has:
 - CFrame Reanimation
 - Align Reanimation
 - R15/R6 Support
+- Jitterless
 - R15 To R6
 - Simple, Fling Bullet, Godmode Options
 - Stable
