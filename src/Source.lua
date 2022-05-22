@@ -13,7 +13,7 @@ if not Options then
 			["SmartLock"] = false, -- Locks Fling on Head; Disables Bullet Dragging.
 		},
 		["R6Method"] = "Align", -- Align,AlignMax Or CFrame
-		["R15Method"] = "CFrame", -- Align,AlignMax Or CFrame
+		["R15Method"] = "Align", -- Align,AlignMax Or CFrame
 		["BonusProperties"] = true, -- Net, and other stuff.
 		["RigAnimations"] = true, -- Enables Default Animate
 		["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
@@ -442,7 +442,8 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 		Character:FindFirstChild("UpperTorso").CFrame = Clone:FindFirstChild("Torso").CFrame * CFrame.new(0,0.19,0)
 		Character:FindFirstChild("HumanoidRootPart").CFrame = Character:FindFirstChild("UpperTorso").CFrame * CFrame.new(0,-0.02,0)		
 		if FlingPart then
-			FlingPart.Velocity = Vector3.new(500,500,500)
+			FlingPart.Velocity = Vector3.new(100,100,100)
+			FlingPart.RotVelocity = Vector3.new(1000,1000,1000)
 		end
 	end
 
