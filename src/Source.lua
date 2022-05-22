@@ -1,6 +1,7 @@
+
 --[[
 	When Forking/Modifying the reanimate please credit the me!
-	We would appreciate it since this reanimate took me 8 hours to code!
+	We would appreciate it since this reanimate took me 8+ hours to code!
 ]]
 
 if not Options then
@@ -415,16 +416,15 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 		if Part:IsA("BasePart") then
 			if Part and Part.Parent then
 				if Options.BonusProperties == true then
-					if Options.Type == "Fling" and FlingPart and Part.Name ~= FlingPart.Name then
-						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
-					elseif Options.Type ~= "Fling" then
-						Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
-					end
-
 					HiddenProps(Part, "NetworkIsSleeping", false)
 					Part.CustomPhysicalProperties = PhysicalProperties.new(0,0,0,0,0)
 					HiddenProps(Part, "NetworkOwnershipRule", Enum.NetworkOwnership.Manual)
-				end
+                end
+                if Options.Type == "Fling" and FlingPart and Part.Name ~= FlingPart.Name then
+                    Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
+                elseif Options.Type ~= "Fling" then
+                    Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
+                end
 			end
 		elseif Part:IsA("Accessory") then
 			if Part and Part:FindFirstChild("Handle") and Part.Parent then
@@ -653,8 +653,8 @@ end))
 
 ConsoleLog("Everything is loaded!")
 
-Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne")
-warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.2.2]")
+Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne, Danix")
+warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.2.3]")
 
 if Options.LoadLibrary == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
