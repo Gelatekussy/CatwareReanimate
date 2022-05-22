@@ -4,35 +4,48 @@
 	We would appreciate it since this reanimate took me 8+ hours to code!
 ]]
 local Global = (getgenv and getgenv()) or _G
-if not Global.Options then
-	Global.Options = {
+if not Global.Options then Global.Options = {
 		["Jitteryness"] = Vector3.new(30.5, 0, 0), -- Velocity
+		["Jitterless"] = true, -- Very Small Jitter, Smaller Delay
 		["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
 		["InstantBullet"] = {
 			["Bool"] = true, -- Enables it
-			["SmartLock"] = false, -- Locks Fling on Head; Disables Bullet Dragging.
+			["SmartLock"] = true, -- Locks Fling on Head; Disables Bullet Dragging.
 		},
-		["R6Method"] = "Align", -- Align,AlignMax Or CFrame
-		["R15Method"] = "Align", -- Align,AlignMax Or CFrame
+		["R6Method"] = "CFrame", -- Align,AlignMax Or CFrame
+		["R15Method"] = "CFrame", -- Align,AlignMax Or CFrame
 		["BonusProperties"] = true, -- Net, and other stuff.
 		["RigAnimations"] = true, -- Enables Default Animate
 		["LoadLibrary"] = false, -- Loads LoadLibrary for scripts that still use it.
 		["Logging"] = true -- Enables logging (prints debug information in console)
-	}
-end
+} end
 local Options = Global.Options
 
+local Vector3_101 = Vector3.new(1,0,1)
+local netless_Y = Global.Options.Jitteryness
+local function getNetlessVelocity(realPartVelocity) --edit this if you have a better netless method
+    local unit = realPartVelocity.Unit
+    if (unit.Y > 0.9) or (unit.Y < -0.9) then
+        return realPartVelocity * (25.1 / realPartVelocity.Y)
+    end
+    realPartVelocity *= Vector3_101
+    local mag = realPartVelocity.Magnitude
+    if (mag > 1) and (mag < 100) then
+        realPartVelocity = unit * Vector3_101 * 100
+    end
+    return realPartVelocity + netless_Y
+end
 
 local function Align(Part0, Part1, Position, Orientation)
 	local AlignPosition = Instance.new("AlignPosition")
 	AlignPosition.Parent = Part0
-	AlignPosition.MaxForce = 13e5
+	AlignPosition.MaxForce = 13e9
 	AlignPosition.Responsiveness = 200
 	AlignPosition.Name = "CatwareAP1"
 
 	local AlignOrientation = Instance.new("AlignOrientation")
 	AlignOrientation.Parent = Part0
-	AlignOrientation.MaxTorque = 9e9
+	AlignOrientation.MaxTorque = 13e9
 	AlignOrientation.Responsiveness = 200
 	AlignOrientation.Name = "CatwareAO"
 
@@ -142,6 +155,7 @@ if Options.BonusProperties == true then
 end
 
 local Character = workspace[Player.Name]
+
 Global.OriginalCharacter = Character
 Character.Archivable = true
 Character.Animate.Disabled = true
@@ -152,11 +166,16 @@ local Mouse = game.Players.LocalPlayer:GetMouse()
 local CharacterG = Character:GetChildren()
 local CharacterD = Character:GetDescendants()
 --local Humanoid = Character:FindFirstChildWhichIsA("Humanoid")
+if Options.Type == "SemiBot" and Humanoid.RigType == Enum.HumanoidRigType.R15 then
+	Options.Type = "Raw"
+end
 
 if Options.Type == "Raw" then
 	FlingPart = nil
 elseif Options.Type == "Fling" then
-	FlingPart = Character:FindFirstChild("Torso") or Character:FindFirstChild("UpperTorso")
+
+elseif Options.Type == "SemiBot" then
+	FlingPart = Character:FindFirstChild("Torso")
 elseif Options.Type == "Bullet" then
 	FlingPart = Character:FindFirstChild("Left Leg") or Character:FindFirstChild("LeftUpperArm")
 elseif Options.Type == "Godmode" then
@@ -216,12 +235,20 @@ if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.Type ~= "Godmode" the
 end
 
 local BP = nil
+local Hat1,Hat2 = nil,nil
 
-if Options.Type == "Bullet" or Options.Type == "Godmode" then
+if Options.Type == "SemiBot" then
+	Hat1 = Character:FindFirstChild("Pal Hair").Handle
+	Hat1:ClearAllChildren()
+	Hat2 = Character:FindFirstChild("Robloxclassicred").Handle
+	Hat2:ClearAllChildren()
+end
+
+if Options.Type == "Bullet" or Options.Type == "Godmode" or Options.Type == "SemiBot" then
 	Global.Disconnect = false
 	
 	task.spawn(function() 
-		if Options.Type == "Bullet" then 
+		if Options.Type == "Bullet" or Options.Type == "SemiBot" then 
 			task.wait(1)
 		elseif Options.Type == "Godmode" then
 			task.wait(6)
@@ -231,8 +258,13 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 			Global.Disconnect = true
 			Humanoid:ChangeState(16)
 			FlingPart.Transparency = 1
-			FlingPart:ClearAllChildren()
-
+			if Options.Type ~= "SemiBot" then
+				FlingPart:ClearAllChildren()
+			else
+				FlingPart.CatwareAP1:Destroy()
+				FlingPart.CatwareAP2:Destroy()
+				FlingPart.CatwareAO:Destroy()
+			end
 			local HighLight = Instance.new("SelectionBox")
 			HighLight.Adornee = FlingPart
 			HighLight.Parent = FlingPart 
@@ -250,7 +282,11 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 			if Options.Type == "Godmode" then
 				Thrust.Force = Vector3.new(150,150,150)
 			end
-
+			if Options.Type == "SemiBot" then
+				BP.P = 31000
+				BP.D = 210
+				Thrust.Force = Vector3.new(0,0,0)
+			end
 			Thrust.Parent = FlingPart
 			local OnHold = false
 
@@ -263,7 +299,11 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 			end))
 
 			table.insert(Loops, RunService.Heartbeat:Connect(function()
+				
 				pcall(function()
+				if Options.Type == "SemiBot" then
+					FlingPart.RotVelocity = Vector3.new(1500,1500,1500)
+				end
 				if Options.InstantBullet.SmartLock == false then
 					if OnHold then
 						if Mouse.Target ~= nil then
@@ -271,8 +311,8 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 							Thrust.Location = Mouse.Hit.p
 						end
 					else
-						BP.Position = Character.Head.Position + Vector3.new(0,-10,0)
-						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
+						BP.Position = Clone.Head.Position + Vector3.new(0,-10,0)
+						Thrust.Location = Clone.Head.Position + Vector3.new(0,-10,0)
 					end
 				else -- HEREEE
 
@@ -293,8 +333,8 @@ if Options.Type == "Bullet" or Options.Type == "Godmode" then
 							end
 						end
 					else
-						BP.Position = Character.Head.Position + Vector3.new(0,-10,0)
-						Thrust.Location = Character.Head.Position + Vector3.new(0,-10,0)
+						BP.Position = Clone.Head.Position + Vector3.new(0,-10,0)
+						Thrust.Location = Clone.Head.Position + Vector3.new(0,-10,0)
 					end -- end the smart flign thing
 				end -- end of the onhold statement
 			end)
@@ -407,25 +447,36 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 		if Part:IsA("BasePart") then
 			if Part and Part.Parent then
                 if Options.Type == "Fling" and FlingPart and Part.Name ~= FlingPart.Name then
+                    if Options.Jitterless == true then
+						Part.Velocity = getNetlessVelocity(Options.Jitteryness or Vector3.new(28.5,0,0))
+                    else
                     Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
+				end
                 elseif Options.Type ~= "Fling" then
+                	if Options.Jitterless == true then
+						Part.Velocity = getNetlessVelocity(Options.Jitteryness or Vector3.new(28.5,0,0))
+                    else
                     Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
-                end
+					end
+				end
 			end
 		elseif Part:IsA("Accessory") then
 			if Part and Part:FindFirstChild("Handle") and Part.Parent then
 				if Options.R6Method == "CFrame" or Options.R15Method == "CFrame" then
 					local Handle = Part:FindFirstChild("Handle")
-
-					if Handle then
-						if Options.Type == "Bullet" and Part.Name ~= "Pal Hair" and Humanoid.RigType == Enum.HumanoidRigType.R6  then
-							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
-						elseif Options.Type == "Bullet" and Part.Name ~= "SniperShoulderL" and Humanoid.RigType == Enum.HumanoidRigType.R15 then
-							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
-						elseif Options.Type ~= "Bullet" then
-							Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+					pcall(function()
+						if Handle then
+							if Options.Type == "Bullet" and Part.Name ~= "Pal Hair" and Humanoid.RigType == Enum.HumanoidRigType.R6  then
+								Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+							elseif Options.Type == "Bullet" or Options.Type == "Godmode" and Part.Name ~= "SniperShoulderL" and Humanoid.RigType == Enum.HumanoidRigType.R15 then
+								Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+							elseif Options.Type == "SemiBot" and Part.Name ~= Hat1.Parent.Name and Part.Name ~= Hat2.Parent.Name then
+								Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+							elseif Options.Type ~= "Bullet" then
+								Handle.CFrame = Clone:FindFirstChild(Handle.Parent.Name).Handle.CFrame
+							end
 						end
-					end
+					end)
 				end
 			end
 		end
@@ -450,8 +501,12 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 
 	pcall(function()
 		if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.R6Method == "CFrame" then
-			Character:FindFirstChild("Torso").CFrame = Clone:FindFirstChild("Torso").CFrame
-
+			if Options.Type ~= "SemiBot" then
+				Character:FindFirstChild("Torso").CFrame = Clone:FindFirstChild("Torso").CFrame
+			else
+				Hat1.CFrame = Clone:FindFirstChild("Torso").CFrame * CFrame.new(0,0.5,0) * CFrame.Angles(0,math.rad(90),0)
+				Hat2.CFrame = Clone:FindFirstChild("Torso").CFrame * CFrame.new(0,-0.5,0) * CFrame.Angles(0,math.rad(90),0)
+			end
 			if Options.Type == "Godmode" then
 					if Global.Disconnect == false then
 						Character:FindFirstChild("HumanoidRootPart").CFrame = Clone:FindFirstChild("HumanoidRootPart").CFrame
@@ -512,13 +567,24 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 end))
 
 ConsoleLog("Applied Velocity: "..tostring(Options.Jitteryness))
-
+ConsoleLog("Jitterless Set to: "..tostring(Options.Jitterless))
+if Options.Type == "SemiBot" then
+	Align(Character:FindFirstChild("Torso"), Clone:FindFirstChild("Torso"))
+end
 if Humanoid.RigType == Enum.HumanoidRigType.R6 and Options.R6Method ~= "CFrame" then
 	if Options.Type == "Godmode" then
 		Align(Character:FindFirstChild("Head"),Clone:FindFirstChild("Head"))
 		Align(Character:FindFirstChild("HumanoidRootPart"),Clone:FindFirstChild("HumanoidRootPart"))
 	end
-
+	if Options.Type == "SemiBot" then
+		task.spawn(function()
+		wait(0.55)
+		Hat1:ClearAllChildren()
+		Hat2:ClearAllChildren()
+		Align(Hat1, Clone:FindFirstChild("Torso"), Vector3.new(0, -0.5, 0),Vector3.new(0,90,0))
+		Align(Hat2, Clone:FindFirstChild("Torso"), Vector3.new(0, 0.5, 0),Vector3.new(0,90,0))
+		end)
+	end
 	Align(Character:FindFirstChild("Torso"), Clone:FindFirstChild("Torso"))
 	Align(Character:FindFirstChild("Right Arm"), Clone:FindFirstChild("Right Arm"))
 	Align(Character:FindFirstChild("Left Arm"), Clone:FindFirstChild("Left Arm"))
@@ -578,8 +644,8 @@ if Options.Type ~= "Godmode" then
 		Global.ReanimationClone = nil
 		Global.Disconnect = nil
 		Clone:Destroy()
-		Players.LocalPlayer.Character = workspace[Players.LocalPlayer.Name]
-
+		Players.LocalPlayer.Character = workspace[Players.LocalPlayer.Name]	
+		Humanoid:ChangeState(15)
 		if workspace:FindFirstChildOfClass("Camera") then
 			workspace:FindFirstChildOfClass("Camera").CameraSubject = Humanoid
 		end
@@ -641,8 +707,8 @@ end))
 
 ConsoleLog("Everything is loaded!")
 
-Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne, Danix")
-warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.3.1]")
+Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne, Danix, MyWorld")
+warn("Made By: Gelatek, ProductionTakeOne, Danix, MyWorld [Version 1.4]")
 
 if Options.LoadLibrary == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
