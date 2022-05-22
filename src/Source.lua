@@ -102,6 +102,7 @@ if not Storage:FindFirstChild("CatwarePreloadData") then
 	ConsoleLog("Preloaded R6 Dummy (game.ReplicatedStorage.R6FakeRig)")
 end
 
+local NetApi = loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/API.lua"))()
 local Assets = Storage:FindFirstChild("CatwarePreloadData")
 
 local function Notification(HappyOrNo, First, Second)
@@ -135,16 +136,7 @@ local Loops = {}
 
 if Options.BonusProperties == true then
 	pcall(function()
-		settings().Physics.AllowSleep = false
-		settings().Physics.ForceCSGv2 = false
-		settings().Physics.DisableCSGv2 = true
-		settings().Physics.UseCSGv2 = false
-		settings().Rendering.EagerBulkExecution = true
-		settings().Physics.ThrottleAdjustTime = math.huge
-		settings().Physics.PhysicsEnvironmentalThrottle = Enum.EnviromentalPhysicsThrottle.Disabled
-		HiddenProps(workspace, "HumanoidOnlySetCollisionsOnStateChange", Enum.HumanoidOnlySetCollisionsOnStateChange.Disabled)
-		HiddenProps(workspace, "InterpolationThrottling", Enum.InterpolationThrottlingMode.Disabled)
-		Players.LocalPlayer.ReplicationFocus = workspace
+        NetApi.Properties()
 	end)
 end
 
@@ -350,17 +342,15 @@ table.insert(Loops, RunService.Stepped:Connect(function()
 	end
 
 	CloneHumanoid:Move(Humanoid.MoveDirection, false)
-
+	if Options.BonusProperties == true then
+		NetApi.Net()
+	end
 	for Index, Track in pairs(HumanoidTracks) do
 		Track:Stop()
 	end
-
-	if Options.BonusProperties == true then
-		HiddenProps(Players.LocalPlayer, "MaximumSimulationRadius", 1000)
-		HiddenProps(Players.LocalPlayer, "SimulationRadius", 1000)
-		SimRadius(1000)
-	end
 end))
+
+
 
 for Index, Motor6D in pairs(CharacterD) do
 	if Motor6D:IsA("Motor6D") and Motor6D.Name ~= "Neck" then
@@ -415,11 +405,6 @@ table.insert(Loops, RunService.Heartbeat:Connect(function()
 	for Index, Part in pairs(CharacterD) do
 		if Part:IsA("BasePart") then
 			if Part and Part.Parent then
-				if Options.BonusProperties == true then
-					HiddenProps(Part, "NetworkIsSleeping", false)
-					Part.CustomPhysicalProperties = PhysicalProperties.new(0,0,0,0,0)
-					HiddenProps(Part, "NetworkOwnershipRule", Enum.NetworkOwnership.Manual)
-                end
                 if Options.Type == "Fling" and FlingPart and Part.Name ~= FlingPart.Name then
                     Part.Velocity = Options.Jitteryness or Vector3.new(28.5,0,0) + Clone:FindFirstChild("Torso").CFrame.LookVector * 10
                 elseif Options.Type ~= "Fling" then
@@ -654,7 +639,7 @@ end))
 ConsoleLog("Everything is loaded!")
 
 Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne, Danix")
-warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.2.3]")
+warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.3]")
 
 if Options.LoadLibrary == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
