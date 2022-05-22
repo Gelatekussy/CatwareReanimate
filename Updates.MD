@@ -43,3 +43,7 @@
 
 # 1.2.3 (BUGFIX)
   - Fixed Velocity Not applying after setting the BonusProperties to `false` 
+
+# 1.3
+  - Code Cleanup
+  - Net Bug Fix
