@@ -19,6 +19,7 @@ This Reanimation Has:
 ```lua
 getgenv().Options = {
 	["Jitteryness"] = Vector3.new(30.5,0,0), -- Velocity
+	["Jitterless"] = true, -- Very Small Jitter, Smaller Delay
 	["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
 	["InstantBullet"] = {
 		["Bool"] = true, -- Enables it
@@ -49,5 +50,9 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareR
     - R15: https://www.roblox.com/catalog/5973840187/Left-Sniper-Shoulder (50 Robux)
     - R6: https://www.roblox.com/catalog/63690008/Pal-Hair (Free)
    # Credits:
-    - Gelatek: Almost Everything
-    - ProductionTakeOne: Optimizations/Special Properties/Help with Godmode
+    - Lead Devs:
+	 - Gelatek: Almost Everything
+   	 - ProductionTakeOne: Optimizations/Special Properties/Help with Godmode
+    - Contributors/Helpers:
+    	 - Danix: Code Cleaning and replacing old functions.
+	 - MyWorld: Jitterless
