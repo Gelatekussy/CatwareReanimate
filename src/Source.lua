@@ -3,9 +3,9 @@
 	When Forking/Modifying the reanimate please credit the me!
 	We would appreciate it since this reanimate took me 8+ hours to code!
 ]]
-
-if not getgenv().Options then
-	getgenv().Options = {
+local Global = (getgenv and getgenv()) or _G
+if not Global.Options then
+	Global.Options = {
 		["Jitteryness"] = Vector3.new(30.5, 0, 0), -- Velocity
 		["Type"] = "Raw", -- Raw (Simple), Fling, Bullet, Godmode
 		["InstantBullet"] = {
@@ -20,8 +20,8 @@ if not getgenv().Options then
 		["Logging"] = true -- Enables logging (prints debug information in console)
 	}
 end
-local Options = getgenv().Options
-local Global = (getgenv and getgenv()) or _G
+local Options = Global.Options
+
 
 local function Align(Part0, Part1, Position, Orientation)
 	local AlignPosition = Instance.new("AlignPosition")
