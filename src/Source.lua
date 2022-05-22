@@ -641,7 +641,7 @@ end))
 ConsoleLog("Everything is loaded!")
 
 Notification(true, "Catware Reanimate", "Loaded! Credits: Gelatek, ProductionTakeOne, Danix")
-warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.3]")
+warn("Made By: Gelatek, ProductionTakeOne, Danix [Version 1.3.1]")
 
 if Options.LoadLibrary == true then
 	loadstring(game:HttpGetAsync("https://raw.githubusercontent.com/StrokeThePea/CatwareReanimate/main/src/LoadLibrary.lua"))()
