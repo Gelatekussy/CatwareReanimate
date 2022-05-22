@@ -44,6 +44,12 @@
 # 1.2.3 (BUGFIX)
   - Fixed Velocity Not applying after setting the BonusProperties to `false` 
 
-# 1.3
+# 1.3 (PRE RELEASE)
   - Code Cleanup
   - Net Bug Fix
+
+# 1.3 
+  - R15 Network Fix On Fling.
+  - R15 Uses new torso fling method!
+    - Basically when your walking you might be kinda jittering to left and right sometimes, but it's stable and better than previous one.
+    - 
