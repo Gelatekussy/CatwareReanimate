@@ -56,3 +56,8 @@
 # 1.3.1
   - The setting table is now counted as a Global (Getgenv)
   - Added Bullet to getgenv list (getgenv().FlingBullet)
+
+# 1.4
+  - Added Jitterless
+  - Added Semibot option for R6 only (Setting it to r15 will result enabling Raw Type)
+  - Some Additional pcalls/debug stuff
