@@ -54,5 +54,5 @@ loadstring(game:HttpGet("https://raw.githubusercontent.com/StrokeThePea/CatwareR
 	- Gelatek: Almost Everything
 	- ProductionTakeOne: Optimizations/Special Properties/Help with Godmode
  	- Danix: Code Cleaning and replacing old functions.
-    # Contributions/Help:
+   # Contributions/Help:
 	- MyWorld: Jitterless
