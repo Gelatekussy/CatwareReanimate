@@ -1,3 +1,6 @@
+if syn then 
+	return
+end
 local HiddenProps = sethiddenproperty or set_hidden_property or sethiddenprop or setscriptable and function(loc,prop,val) if not loc then return true end local succ,f = pcall(function() local a = loc[prop] end) if not succ then setscriptable(loc,prop,true) end loc[prop] = val end or function() return nil end
 local SimRadius = setsimulationradius or set_simulation_radius or HiddenProps() and function(val) HiddenProps(Player,"SimulationRadius",val) end or function() end
 local RunService = game:GetService("RunService")
