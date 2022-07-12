@@ -1,4 +1,4 @@
-! This is discontinued and theres something new, Gelatek Reanimate! Stabler, Better, 0% MW Jitterless, Cleaner Source
+# This is discontinued and theres something new, Gelatek Reanimate! Stabler, Better, 0% MW Jitterless, Cleaner Source
 https://github.com/StrokeThePea/GelatekReanimate
 
 
