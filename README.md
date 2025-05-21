@@ -1,5 +1,6 @@
-# This is discontinued and theres something new, Gelatek Reanimate! Stabler, Better, 0% MW Jitterless, Cleaner Source
-https://github.com/StrokeThePea/GelatekReanimate
+# This is discontinued and theres something new, Gelatek Reanimate! WHICH ALSO SUCKS!!! WHICH MEANS!! YOU SHOULD GET K-KRYPTON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+- Newer Reanimate: TheExploiter/Krypton
+- Legacy Limb Reanimate: https://github.com/StrokeThePea/GelatekReanimate
 
 
 
