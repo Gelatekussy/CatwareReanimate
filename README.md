@@ -14,12 +14,10 @@ This Reanimation Has:
 - CFrame Reanimation
 - Align Reanimation
 - R15/R6 Support
-- Jitterless
+- Jitterless (fake)
 - R15 To R6
 - Simple, Fling Bullet, Godmode Options
 - Stable
-- Doesn't use a lot of RAM
-- Optimized
 - Preloads Assets so no more getobjects lagspikes!
 - Automatically gets your Clone on scripts! (no need to change character variable!)
 - Built-In Bullet Setting
