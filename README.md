@@ -1,5 +1,5 @@
 # This is discontinued and theres something new, Gelatek Reanimate! WHICH ALSO SUCKS!!! WHICH MEANS!! YOU SHOULD GET K-KRYPTON!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-- Newer Reanimate: TheExploiter/Krypton
+- Newer Reanimate: [TheExploiter/Krypton](https://github.com/KadeTheExploiter/Krypton)
 - Legacy Limb Reanimate: https://github.com/StrokeThePea/GelatekReanimate
 
 
